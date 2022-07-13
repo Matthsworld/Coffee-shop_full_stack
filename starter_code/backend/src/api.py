@@ -119,6 +119,8 @@ def modify_drinks(pay, id):
     try:
         if req_title:
             drink.title = req_title
+        if req_recipe:
+            drink.recipe = json.dumps(req['recipe'])
         drink.update()
         return jsonify({'success': True, 'drinks': [drink.long()]}), 200
     except:
