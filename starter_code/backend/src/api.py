@@ -34,7 +34,7 @@ db_drop_and_create_all()
 
 
 @app.route('/drinks', methods=['GET'])
-def collect_drinks():
+def get_drinks():
     drinks = Drink.query.all()
     drinksShort = [d.short() for d in drinks]
     return jsonify({
@@ -57,7 +57,7 @@ def collect_drinks():
 
 @app.route('/drinks-detail', methods=['GET'])
 @requires_auth('get:drinks-detail')
-def collect_drinks_detail(pay):
+def get_drinks_detail(pay):
     drinks = Drink.query.all()
     drinksLong = [d.long() for d in drinks]
     return jsonify({
@@ -79,7 +79,7 @@ def collect_drinks_detail(pay):
 
 @app.route('/drinks', methods=['POST'])
 @requires_auth('post:drinks')
-def make_drinks(pay):
+def create_drinks(pay):
     body = request.get_json()
     req_title = body.get('title', None)
     req_recipe = body.get('recipe', None)
@@ -110,8 +110,9 @@ def make_drinks(pay):
 
 @app.route('/drinks/<int:id>', methods=['PATCH'])
 @requires_auth('patch:drinks')
-def modify_drinks(pay, id):
+def update_drinks(pay, id):
     body = request.get_json()
+    req = request.get_json()
     req_title = req.get('title')
     drink = Drink.query.filter(Drink.id == id).one_or_none()
     if drink is None:
@@ -142,7 +143,7 @@ def modify_drinks(pay, id):
 
 @app.route('/drinks/<int:id>', methods=['DELETE'])
 @requires_auth('delete:drinks')
-def remove_drinks(pay, id):
+def delete_drinks(pay, id):
     drink = Drink.query.filter(Drink.id == id).one_or_none()
     if drink is None:
         abort(404)
