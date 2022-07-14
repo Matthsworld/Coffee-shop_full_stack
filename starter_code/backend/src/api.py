@@ -114,6 +114,8 @@ def update_drinks(pay, id):
     body = request.get_json()
     req = request.get_json()
     req_title = req.get('title')
+    req_title = req.get('title', None)
+    req_recipe = req.get('recipe', None)
     drink = Drink.query.filter(Drink.id == id).one_or_none()
     if drink is None:
         abort(404)
